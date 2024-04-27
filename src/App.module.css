@@ -1,0 +1,12 @@
+.btn {
+  border: 2px solid;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 12px;
+  color: black;
+}
+
+.h1-custom {
+  font-weight: bold;
+  font-style: italic;
+}
