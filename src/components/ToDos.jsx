@@ -29,6 +29,7 @@ const ToDos = () => {
 
   return (
     <>
+      {console.log("Rendering ToDos")}
       {/* Normal HTML  */}
       {/* <h1 style="border: 1px solid;background-color: green" >Todos App</h1> */}
       {/* JSX */}

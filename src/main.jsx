@@ -4,11 +4,12 @@ import App from "./App.jsx";
 import Subscriptions from "./components/Subscriptions.jsx";
 import State from "./components/State.jsx";
 import Students from "./components/Students.jsx";
+import LifeCycle from "./components/LifeCycle.jsx";
 import "./index.css";
 
 // Create of the VDOM using the react-dom
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Students />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <LifeCycle />
+  // </React.StrictMode>
 );

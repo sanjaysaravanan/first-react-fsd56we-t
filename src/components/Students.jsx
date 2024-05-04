@@ -60,6 +60,7 @@ const Student = ({ id, name, grade, image, isSenior, toAbsent, isAbsent }) => {
 };
 
 const Students = () => {
+  // absentees state to store the id of the students who are absent
   const [absentees, setAbsentees] = useState([]);
 
   const addToAbsentees = (id) => {
@@ -73,6 +74,7 @@ const Students = () => {
         paddingTop: "200px",
       }}
     >
+      {console.log(absentees)}
       <h1 style={{ position: "absolute", top: 10, right: 10 }}>
         Absentees ({absentees.length})
       </h1>

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Normal CSS importing
+import { useState } from "react";
 import "./App.css";
 
 // Module CSS Importing
@@ -14,6 +15,7 @@ const todos = ["Read", "Eat", "Sleep"];
 const isDone = true;
 
 function App() {
+  const [mount, setMount] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const sampleFunc = (e) => {
     console.log(e.target);
@@ -34,7 +36,8 @@ function App() {
 
   return (
     <div>
-      <ToDos />
+      <h1>Sample Text</h1>
+      {mount && <ToDos />}
       {/* {console.log(styles)} */}
       {/* Normal HTML */}
       {/* <buttton onclick="samplFunc()">Click Me</buttton> */}
