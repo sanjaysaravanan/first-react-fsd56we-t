@@ -46,6 +46,7 @@ const SampleComponent = () => {
       }
     }
 
+    // the above statement everytime a value in deps array is changed
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [like]);
 
