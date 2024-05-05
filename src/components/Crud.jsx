@@ -45,7 +45,7 @@ const Student = (props) => {
       )}
       <img
         alt={props.name}
-        style={{ height: "200px", width: "300px" }}
+        style={{ height: "200px", width: "300px", objectFit: "contain" }}
         src={props.image}
       />
       <h3>{props.name}</h3>
@@ -71,41 +71,149 @@ Student.propTypes = {
 const Crud = () => {
   // Read all the students
   const [students, setStudents] = useState(data);
+  const [displayStudents, setDisplayStudents] = useState(data);
+  const [formState, setFormState] = useState({
+    name: "",
+    grade: "12",
+    image: "",
+    isSenior: false,
+  });
 
-  // Delete the Student
+  const onNameChange = (e) => {
+    setFormState({
+      ...formState,
+      name: e.target.value,
+    });
+  };
+
+  const onImageChange = (e) => {
+    setFormState({
+      ...formState,
+      image: e.target.value,
+    });
+  };
+
+  const onGradeChange = (e) => {
+    setFormState({
+      ...formState,
+      grade: e.target.value,
+    });
+  };
+
+  // Commong input Change Event
+  const handleChange = (e) => {
+    if (e.target.name === "isSenior") {
+      setFormState({
+        ...formState,
+        isSenior: e.target.checked,
+      });
+    } else {
+      setFormState({
+        ...formState,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  // Creating a Student
+  // Create a new student
+  const createStudent = (stuData) => {
+    const tempStu = { ...stuData };
+    // id
+    const id = Date.now();
+
+    tempStu.id = id;
+
+    const tempStus = [...students, tempStu];
+
+    // addition of student
+    setStudents(tempStus);
+    setDisplayStudents(tempStus);
+  };
+
+  // Form Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    createStudent(formState);
+  };
+
+  // Deleting a student
   const deleteStudent = (stuId) => {
-    // filter only the students whose id is not stuId
-    const temp = students.filter((stu) => stu.id !== stuId);
+    const filteredData = students.filter((student) => student.id !== stuId);
+    setStudents(filteredData);
+    setDisplayStudents(filteredData);
+  };
 
-    setStudents(temp);
+  // Filtering the students
+  const changeFilter = (e) => {
+    console.log(e.target.value);
+    if (e.target.value === "junior") {
+      setDisplayStudents(students.filter((stu) => !stu.isSenior));
+    } else if (e.target.value === "senior") {
+      setDisplayStudents(students.filter((stu) => stu.isSenior));
+    } else {
+      setDisplayStudents(students);
+    }
   };
 
   return (
     <>
-      <form style={{ border: "1px solid", padding: 8, m: 8 }}>
-        <input type={"text"} placeholder="Name" name="name" required />
+      {console.log("students", students)}
+      <form
+        onSubmit={handleSubmit}
+        style={{ border: "1px solid", padding: 8, m: 8 }}
+      >
+        <input
+          type={"text"}
+          placeholder="Name"
+          name="name"
+          value={formState.name}
+          onChange={handleChange}
+          required
+        />
         <br />
-        <input type={"url"} placeholder="Image" name="image" required />
+        <input
+          type={"url"}
+          value={formState.image}
+          onChange={handleChange}
+          placeholder="Image"
+          name="image"
+          required
+        />
         <br />
-        <input type={"text"} placeholder="Grade" name="grade" required />
+        <input
+          type={"text"}
+          placeholder="Grade"
+          value={formState.grade}
+          onChange={handleChange}
+          name="grade"
+          required
+        />
         <br />
         <label htmlFor="isSenior">Senior</label>
         <input
           type={"checkbox"}
+          onChange={handleChange}
+          checked={formState.isSenior}
           placeholder="isSenior"
           name="isSenior"
-          required
         />
         <br />
         <button type="submit">Submit</button>
       </form>
+      <select onChange={changeFilter}>
+        <option value="all">All</option>
+        <option value="senior">Senior</option>
+        <option value="junior">Junior</option>
+      </select>
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
         }}
       >
-        {students.map((stu) => (
+        {displayStudents.map((stu) => (
           <Student key={stu.id} {...stu} deleteStudent={deleteStudent} />
         ))}
       </div>
