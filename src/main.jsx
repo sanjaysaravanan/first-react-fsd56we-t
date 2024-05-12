@@ -11,6 +11,8 @@ import PropsDrilling from "./components/PropsDrilling.jsx";
 import PropsDrillingOptimised from "./components/PropsDrilling-Optimised.jsx";
 import ContextLearning from "./components/ContextLearning.jsx";
 import ContextLearningTask from "./components/ContextLearning-Task.jsx";
+import ReferenceExample from "./components/ReferenceExamples.jsx";
+import Reference from "./components/Reference.jsx";
 import "./index.css";
 
 // Create of the VDOM using the react-dom
@@ -25,6 +27,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // <PropsDrilling />
   // <PropsDrillingOptimised />
   // <ContextLearning />
-  <Crud />
+  <ReferenceExample />
   // </React.StrictMode>
 );
