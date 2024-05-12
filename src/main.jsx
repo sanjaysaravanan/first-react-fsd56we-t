@@ -25,6 +25,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // <PropsDrilling />
   // <PropsDrillingOptimised />
   // <ContextLearning />
-  <ContextLearningTask />
+  <Crud />
   // </React.StrictMode>
 );

@@ -51,7 +51,8 @@ const Student = (props) => {
       <h3>{props.name}</h3>
       <h4>{props.grade}</h4>
       <button onClick={() => props.deleteStudent(props.id)}>Delete</button>
-      <button onClick={() => {}}>
+      <button onClick={() => props.loadEditStudent(props.id)}>Edit</button>
+      <button onClick={() => props.toggleSenior(props.id)}>
         Change to {props.isSenior ? "Junior" : "Senior"}
       </button>
     </div>
@@ -65,6 +66,15 @@ Student.propTypes = {
   isSenior: PropTypes.bool,
   image: PropTypes.string,
   deleteStudent: PropTypes.func,
+  toggleSenior: PropTypes.func,
+  loadEditStudent: PropTypes.func,
+};
+
+const initialFormState = {
+  name: "",
+  grade: "",
+  image: "",
+  isSenior: false,
 };
 
 // Crud for Students
@@ -72,12 +82,9 @@ const Crud = () => {
   // Read all the students
   const [students, setStudents] = useState(data);
   const [displayStudents, setDisplayStudents] = useState(data);
-  const [formState, setFormState] = useState({
-    name: "",
-    grade: "12",
-    image: "",
-    isSenior: false,
-  });
+  const [formState, setFormState] = useState(initialFormState);
+  const [editId, setEditId] = useState(null);
+  const [filter, setFilter] = useState("all");
 
   const onNameChange = (e) => {
     setFormState({
@@ -115,6 +122,17 @@ const Crud = () => {
     }
   };
 
+  const displayFun = (filName, studentsData = students) => {
+    console.log(filName);
+    if (filName === "junior") {
+      setDisplayStudents(studentsData.filter((stu) => !stu.isSenior));
+    } else if (filName === "senior") {
+      setDisplayStudents(studentsData.filter((stu) => stu.isSenior));
+    } else {
+      setDisplayStudents(studentsData);
+    }
+  };
+
   // Creating a Student
   // Create a new student
   const createStudent = (stuData) => {
@@ -128,14 +146,46 @@ const Crud = () => {
 
     // addition of student
     setStudents(tempStus);
-    setDisplayStudents(tempStus);
+    displayFun(filter, tempStus);
+  };
+
+  // Load the Editing student to the form
+  const loadEditStudent = (id) => {
+    setEditId(id);
+
+    const stuObj = students.find((student) => student.id === id);
+
+    setFormState(stuObj);
+  };
+
+  // Edit a Student
+  const editStudent = (stuData) => {
+    stuData.id = editId;
+
+    const index = students.findIndex((student) => student.id === editId);
+
+    const tempStus = [...students];
+
+    tempStus[index] = stuData;
+
+    setStudents(tempStus);
+
+    displayFun(filter, tempStus);
+
+    setEditId(null);
   };
 
   // Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    createStudent(formState);
+    if (editId) {
+      editStudent(formState);
+    } else {
+      createStudent(formState);
+    }
+
+    setFormState(initialFormState);
   };
 
   // Deleting a student
@@ -145,16 +195,32 @@ const Crud = () => {
     setDisplayStudents(filteredData);
   };
 
+  // change junior <-> senior
+  const toggleSenior = (id) => {
+    // find the student
+    const stuObj = students.find((student) => student.id === id);
+
+    if (stuObj.isSenior) {
+      stuObj.isSenior = false;
+    } else {
+      stuObj.isSenior = true;
+    }
+
+    const index = students.findIndex((student) => student.id === id);
+
+    const tempStus = [...students];
+
+    tempStus[index] = stuObj;
+
+    setStudents(tempStus);
+
+    setDisplayStudents(tempStus);
+  };
+
   // Filtering the students
   const changeFilter = (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "junior") {
-      setDisplayStudents(students.filter((stu) => !stu.isSenior));
-    } else if (e.target.value === "senior") {
-      setDisplayStudents(students.filter((stu) => stu.isSenior));
-    } else {
-      setDisplayStudents(students);
-    }
+    setFilter(e.target.value);
+    displayFun(e.target.value);
   };
 
   return (
@@ -202,7 +268,7 @@ const Crud = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
-      <select onChange={changeFilter}>
+      <select value={filter} onChange={changeFilter}>
         <option value="all">All</option>
         <option value="senior">Senior</option>
         <option value="junior">Junior</option>
@@ -214,7 +280,13 @@ const Crud = () => {
         }}
       >
         {displayStudents.map((stu) => (
-          <Student key={stu.id} {...stu} deleteStudent={deleteStudent} />
+          <Student
+            key={stu.id}
+            {...stu}
+            deleteStudent={deleteStudent}
+            toggleSenior={toggleSenior}
+            loadEditStudent={loadEditStudent}
+          />
         ))}
       </div>
     </>
