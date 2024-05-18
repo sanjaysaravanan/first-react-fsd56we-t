@@ -12,6 +12,7 @@ import PropsDrillingOptimised from "./components/PropsDrilling-Optimised.jsx";
 import ContextLearning from "./components/ContextLearning.jsx";
 import ContextLearningTask from "./components/ContextLearning-Task.jsx";
 import ReferenceExample from "./components/ReferenceExamples.jsx";
+import ReducerComponent from "./components/UseReducer.jsx";
 import Reference from "./components/Reference.jsx";
 import "./index.css";
 
@@ -27,6 +28,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // <PropsDrilling />
   // <PropsDrillingOptimised />
   // <ContextLearning />
-  <ReferenceExample />
+  <ReducerComponent />
   // </React.StrictMode>
 );
